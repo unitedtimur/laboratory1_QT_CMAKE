@@ -179,6 +179,16 @@ void CheckFile::terminal()
                                 isDir = false;
                                 isAdd = false;
                             }
+
+                            for (const auto& it : list)
+                            {
+	                            if (std::find(fileNames.begin(), fileNames.end(), it.filePath()) != fileNames.end())
+	                            {
+                                    isDir = false;
+                                    isAdd = false;
+                                    break;
+	                            }
+                            }
                         }
                     }
                 }
@@ -359,18 +369,6 @@ void CheckFile::checkProperties()
                     emit fileRemoved(i);
 ;	            }
             }
-
-
-            /*for (const auto& fileName : fileNames)
-            {
-                if (!QFileInfo(fileName).exists())
-                {
-                    isDelete = true;
-                    cout << endl;
-                    emit fileRemoved(iter);
-                }
-                ++iter;
-            }*/
 
             if (isDelete)
             {
