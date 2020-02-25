@@ -3,7 +3,6 @@
 
 #include <QTextStream>
 #include <QDir>
-
 #include <thread>
 
 #ifdef Q_OS_WIN32
@@ -36,10 +35,8 @@ CheckFile::CheckFile(QObject *parent) :
            #elif
                QTextStream(stdout) << "\n\t" << fileName << " was changed!\n\tSize is " << QFileInfo(fileName).size() << " byte" << endl;
            #endif
-           //QTextStream cout(stdout);
-           //cout << flush << "\n\t" << fileName << " was changed!" << endl;
-           //cout << "\tSize is " << QFileInfo(fileName).size() << " byte" << endl;
-           QTextStream(stdout) << Configuration::MessageInputTheCommand;
+           
+       		QTextStream(stdout) << Configuration::MessageInputTheCommand;
        }
     });
 
@@ -109,13 +106,12 @@ void CheckFile::terminal()
 {
     QTextStream cin(stdin), cout(stdout);
 
-    auto printListFiles = [&](){
-
+    const auto printListFiles = [&]() -> void
+	{
         qint32 iter = 0;
 
         foreach (const auto& fileName, fileNames)
         {
-
             cout << '\t' << ++iter << " ---> " << fileName << endl;
         }
     };
@@ -182,6 +178,16 @@ void CheckFile::terminal()
                             {
                                 isDir = false;
                                 isAdd = false;
+                            }
+
+                            for (const auto& it : list)
+                            {
+	                            if (std::find(fileNames.begin(), fileNames.end(), it.filePath()) != fileNames.end())
+	                            {
+                                    isDir = false;
+                                    isAdd = false;
+                                    break;
+	                            }
                             }
                         }
                     }
@@ -351,17 +357,17 @@ void CheckFile::checkProperties()
         if (!fileNames.isEmpty())
         {
             qint32 iter = 0;
+
             bool isDelete = false;
 
-            for (const auto& fileName : fileNames)
+            for (qint32 i = fileNames.size() - 1; i >= 0; --i)
             {
-                if (!QFileInfo(fileName).exists())
-                {
+	            if (!QFileInfo(fileNames[i]).exists())
+	            {
                     isDelete = true;
                     cout << endl;
-                    emit fileRemoved(iter);
-                }
-                ++iter;
+                    emit fileRemoved(i);
+;	            }
             }
 
             if (isDelete)

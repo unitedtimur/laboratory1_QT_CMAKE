@@ -20,8 +20,8 @@ signals:
     void enteredSize(const qint32& index);
 
 private slots:
-    void terminal();
-    void checkProperties();
+    void Q_NORETURN terminal();
+    void Q_NORETURN checkProperties();
 
 private:
     QVector<QString>    commands;
