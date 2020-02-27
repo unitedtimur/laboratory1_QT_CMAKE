@@ -83,11 +83,6 @@ CheckFile::CheckFile(QObject *parent) :
     });
 }
 
-CheckFile::~CheckFile()
-{
-    // empty
-}
-
 void CheckFile::startTerminalThread()
 {
     std::thread inputTerminalThread(&CheckFile::terminal, this);

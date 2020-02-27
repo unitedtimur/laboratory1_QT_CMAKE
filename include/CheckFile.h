@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QFileSystemWatcher>
 
-class CheckFile : public QObject
+class CheckFile final : public QObject
 {
     Q_OBJECT
 public:
     explicit CheckFile(QObject *parent = nullptr);
-    ~CheckFile();
+    ~CheckFile() = default;
 
     void startTerminalThread();
     void startCheckPropertiesThread();
