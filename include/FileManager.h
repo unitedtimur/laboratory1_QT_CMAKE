@@ -1,15 +1,15 @@
-#ifndef CHECKFILE_H
-#define CHECKFILE_H
+#ifndef FILEMANAGER_H
+#define FILEMANAGER_H
 
 #include <QObject>
 #include <QFileSystemWatcher>
 
-class CheckFile final : public QObject
+class FileManager final : public QObject
 {
     Q_OBJECT
 public:
-    explicit CheckFile(QObject *parent = nullptr);
-    ~CheckFile() = default;
+    explicit FileManager(QObject *parent = nullptr);
+    ~FileManager() = default;
 
     void startTerminalThread();
     void startCheckPropertiesThread();
@@ -29,4 +29,4 @@ private:
     QFileSystemWatcher  fileSystemWatcher;
 };
 
-#endif // CHECKFILE_H
+#endif // FILEMANAGER_H

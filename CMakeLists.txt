@@ -17,12 +17,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(project_headers 
 	include/Configuration.h
-	include/CheckFile.h
+	#include/ConsoleFileManager.h	
+	include/ConsoleFileManager.h
 )
 
 set(project_sources 
 	src/main.cpp
-	src/CheckFile.cpp
+	#src/ConsoleFileManager.cpp
+	src/ConsoleFileManager.cpp
 )
 
 add_executable(${PROJECT_NAME}

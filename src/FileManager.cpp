@@ -1,4 +1,4 @@
-#include "include/CheckFile.h"
+#include "include/FileManager.h"
 #include "include/Configuration.h"
 
 #include <QTextStream>
@@ -10,7 +10,7 @@
     static HANDLE hConsole;
 #endif
 
-CheckFile::CheckFile(QObject *parent) :
+FileManager::FileManager(QObject *parent) :
     QObject(parent)
 {
     commands = {
@@ -40,7 +40,7 @@ CheckFile::CheckFile(QObject *parent) :
        }
     });
 
-    connect(this, &CheckFile::fileAdded, [&](const QString& fileName)
+    connect(this, &FileManager::fileAdded, [&](const QString& fileName)
     {
         #ifdef Q_OS_WIN32
             hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -55,7 +55,7 @@ CheckFile::CheckFile(QObject *parent) :
         fileNames.push_back(fileName);
     });
 
-    connect(this, &CheckFile::fileRemoved, [&](const qint32& index)
+    connect(this, &FileManager::fileRemoved, [&](const qint32& index)
     {
         #ifdef Q_OS_WIN32
             hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -70,7 +70,7 @@ CheckFile::CheckFile(QObject *parent) :
         fileNames.remove(index);
     });
 
-    connect(this, &CheckFile::enteredSize, [&](const qint32& index)
+    connect(this, &FileManager::enteredSize, [&](const qint32& index)
     {
         #ifdef Q_OS_WIN32
             hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -83,21 +83,21 @@ CheckFile::CheckFile(QObject *parent) :
     });
 }
 
-void CheckFile::startTerminalThread()
+void FileManager::startTerminalThread()
 {
-    std::thread inputTerminalThread(&CheckFile::terminal, this);
+    std::thread inputTerminalThread(&FileManager::terminal, this);
 
     inputTerminalThread.detach();
 }
 
-void CheckFile::startCheckPropertiesThread()
+void FileManager::startCheckPropertiesThread()
 {
-    std::thread checkPropertiesThread(&CheckFile::checkProperties, this);
+    std::thread checkPropertiesThread(&FileManager::checkProperties, this);
 
     checkPropertiesThread.detach();
 }
 
-void CheckFile::terminal()
+void FileManager::terminal()
 {
     QTextStream cin(stdin), cout(stdout);
 
@@ -341,7 +341,7 @@ void CheckFile::terminal()
     }
 }
 
-void CheckFile::checkProperties()
+void FileManager::checkProperties()
 {
     forever
     {

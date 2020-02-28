@@ -1,7 +1,8 @@
 #include <QCoreApplication>
 #include <QTextStream>
 
-#include "include/CheckFile.h"
+//#include "include/FileManager.h"
+#include "include/ConsoleFileManager.h"
 #include "include/Configuration.h"
 
 int main(int argc, char *argv[])
@@ -10,10 +11,7 @@ int main(int argc, char *argv[])
 
     QTextStream(stdout) << Configuration::Copyright << endl;
 
-    CheckFile checkFile;
+    ConsoleFileManager::instance().startTerminalThread().startCheckFilesThread();
 
-    checkFile.startTerminalThread();
-    checkFile.startCheckPropertiesThread();
-
-    return a.exec();
+    return QCoreApplication::exec();
 }
