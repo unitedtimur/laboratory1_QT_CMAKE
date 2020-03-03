@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QMap>
-#include <QFileSystemWatcher>
 
 class ConsoleFileManager final : public QObject
 {
@@ -22,20 +21,30 @@ public:
 
 signals:
 	void fileAdded(const QString& fileName);
-	void fileRemoved(const QString& index);
-	void enteredSize(const QString& index);
+	void fileRemoved(const QString& fileName);
+	void enteredSize(const QString& fileName);
 
 private slots:
 	void fileAdd(const QString& fileName);
-	void fileRemove(const QString& index);
-	void fileSize(const QString& index);
+	void fileRemove(const QString& fileName);
+	void fileSize(const QString& fileName);
+	void printFiles() const;
 
 private:
 	explicit ConsoleFileManager(QObject* parent = nullptr);
 	~ConsoleFileManager() = default;
 
-	QMap<QString, bool> files;
-	QVector<QString>	commands;
+	enum Conditions
+	{
+		Added			= 0x1,
+		Removed			= 0x2,
+		RemovedWinApi	= 0x3,
+		Restored		= 0x4
+	};
+
+	QMap<QString, Conditions>				files;
+	QMap<QString, qint64>					filesSize;
+	QVector <QString>						commands;
 };
 
 #endif // FILEMANAGER_H
