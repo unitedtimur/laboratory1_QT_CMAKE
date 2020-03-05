@@ -8,9 +8,9 @@
 
 #ifdef Q_OS_WIN32
 
-	#include <Windows.h>
+#include <Windows.h>
 
-	static HANDLE hConsole;
+static HANDLE hConsole;
 
 #endif
 
@@ -83,26 +83,26 @@ void ConsoleFileManager::fileSize(const QString& fileName)
 void ConsoleFileManager::printFiles() const
 {
 	qint32 iter = 0;
-	
+
 	for (auto it = files.begin(); it != files.end(); ++it)
 	{
-		#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN32
 		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		SetConsoleTextAttribute(hConsole, 1);
-		#endif
+#endif
 
 		if ((it.value() == Conditions::Added) || (it.value() == Conditions::Restored))
 		{
-			QTextStream(stdout) << '\t' << ++iter << " ---> " << it.key() <<endl;
+			QTextStream(stdout) << '\t' << ++iter << " ---> " << it.key() << endl;
 		}
 		else
 		{
 			QTextStream(stdout) << '\t' << ++iter << " ---> " << it.key() << " REMOVED WINAPI" << endl;
 		}
 
-		#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN32
 		SetConsoleTextAttribute(hConsole, 7);
-		#endif
+#endif
 	}
 }
 
@@ -138,7 +138,7 @@ void ConsoleFileManager::terminal()
 			QFileInfoList list;
 
 			bool isAdd = false;
-		
+
 			while (!isAdd)
 			{
 				cout << '\t' << Configuration::MessageAdd << flush;
@@ -292,18 +292,18 @@ void ConsoleFileManager::terminal()
 		}
 
 		// command == 'clear'
-        if (command == commands[5])
-        {
-            #ifdef Q_OS_WIN32
-                system("cls");
-            #endif
+		if (command == commands[5])
+		{
+			#ifdef Q_OS_WIN32
+				system("cls");
+			#endif
 
-            #ifdef Q_OS_LINUX
-                system("clear");
-            #endif
+			#ifdef Q_OS_LINUX
+				system("clear");
+			#endif
 
-            continue;
-        }
+			continue;
+		}
 
 		// command == 'remAll'
 		if (command == commands[6])
@@ -401,9 +401,8 @@ void ConsoleFileManager::checkFiles()
 }
 
 ConsoleFileManager::ConsoleFileManager(QObject* parent) :
-	QObject(parent)
-{
-	commands = {
+	QObject(parent),
+	commands {
 		QString("add"),
 		QString("remove"),
 		QString("size"),
@@ -411,8 +410,8 @@ ConsoleFileManager::ConsoleFileManager(QObject* parent) :
 		QString("help"),
 		QString("clear"),
 		QString("remall")
-	};
-
+}
+{
 	connect(this, &ConsoleFileManager::fileAdded, this, &ConsoleFileManager::fileAdd);
 	connect(this, &ConsoleFileManager::fileRemoved, this, &ConsoleFileManager::fileRemove);
 	connect(this, &ConsoleFileManager::enteredSize, this, &ConsoleFileManager::fileSize);
